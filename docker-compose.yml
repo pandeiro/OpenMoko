@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  opencode:
+    build: .
+    container_name: opencode-agent
+    ports:
+      - "127.0.0.1:7777:8080"  # Only expose on localhost for security
+    volumes:
+      # Workspace directory (where repos live)
+      - ./workspace:/workspace:rw
+      
+      # SSH keys for git authentication (read-only for security)
+      - ./ssh:/root/.ssh:ro
+      
+      # Config directory for repos.txt
+      - ./config:/config:ro
+      
+      # Optional: Git config (if you want to pre-configure)
+      # - ./gitconfig:/root/.gitconfig:ro
+    
+    environment:
+      # Git configuration
+      - GIT_USER_NAME=${GIT_USER_NAME}
+      - GIT_USER_EMAIL=${GIT_USER_EMAIL}
+      
+      # OpenCode password (REQUIRED)
+      - OPENCODE_SERVER_PASSWORD=${OPENCODE_SERVER_PASSWORD}
+      
+      # OpenCode configuration (adjust as needed)
+      - NODE_ENV=production
+    
+    restart: unless-stopped
+    
+    # Uncomment if you need to access other services
+    # networks:
+    #   - app-network
+
+# Uncomment if using custom networks
+# networks:
+#   app-network:
+#     driver: bridge
