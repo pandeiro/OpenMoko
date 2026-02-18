@@ -6,6 +6,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends git openssh-cli
 # Install OpenCode globally
 RUN npm i -g opencode-ai@latest
 
+# Install Conductor plugin for OpenCode
+RUN CI=true npx create-conductor-flow --agent opencode --scope global --git-ignore none
+
 # Create workspace directory
 RUN mkdir -p /workspace
 
