@@ -47,5 +47,25 @@ jobs:
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           script: |
             cd ${{ secrets.DEPLOY_PATH }}
+            
+            # Backup sensitive files before any git operations
+            cp .env .env.bak 2>/dev/null || true
+            cp ssh/id_rsa ssh/id_rsa.bak 2>/dev/null || true
+            cp ssh/id_ed25519 ssh/id_ed25519.bak 2>/dev/null || true
+            cp config/repos.txt config/repos.txt.bak 2>/dev/null || true
+            
+            # Fetch latest changes from origin
+            git fetch origin main
+            git checkout origin/main -- docker-compose.yml || true
+            
+            # Restore sensitive files (they should never be overwritten by git)
+            cp -f .env.bak .env 2>/dev/null || true
+            cp -f ssh/id_rsa.bak ssh/id_rsa 2>/dev/null || true
+            cp -f ssh/id_ed25519.bak ssh/id_ed25519 2>/dev/null || true
+            cp -f config/repos.txt.bak config/repos.txt 2>/dev/null || true
+            
+            # Clean up backups
+            rm -f .env.bak ssh/*.bak config/repos.txt.bak 2>/dev/null
+            
             docker compose pull
             docker compose up -d
