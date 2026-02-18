@@ -8,6 +8,9 @@ services:
       # Workspace directory (where repos live)
       - ./workspace:/workspace:rw
       
+      # OpenCode data persistence (sessions, SQLite DB)
+      - opencode_data:/root/.local/share/opencode:rw
+      
       # SSH keys for git authentication (read-only for security)
       - ./ssh:/root/.ssh:ro
       
@@ -41,3 +44,6 @@ services:
 # networks:
 #   app-network:
 #     driver: bridge
+
+volumes:
+  opencode_data:

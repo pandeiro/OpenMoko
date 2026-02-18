@@ -150,9 +150,25 @@ git@github.com:user/repo.git  # This repo will be cloned
 
 | Host Path | Container Path | Purpose |
 |-----------|---------------|---------|
+| `opencode_data` (named volume) | `/root/.local/share/opencode` | OpenCode session data (SQLite DB, history) |
 | `./workspace` | `/workspace` | Where repos are cloned (read-write) |
 | `./ssh` | `/root/.ssh` | SSH keys for git auth (read-only) |
 | `./config` | `/config` | Configuration files like repos.txt (read-only) |
+
+**Note:** The `opencode_data` named volume persists your OpenCode sessions across container restarts. To inspect or backup this data:
+
+```bash
+# Inspect volume contents
+docker run --rm -it -v openmoco_opencode_data:/data alpine ls -la /data
+
+# Backup volume
+docker run --rm -v openmoco_opencode_data:/data -v $(pwd)/backup:/backup alpine tar czf /backup/opencode-data.tar.gz -C /data .
+
+# Restore volume
+docker volume rm openmoco_opencode_data
+docker volume create openmoco_opencode_data
+docker run --rm -it -v openmoco_opencode_data:/data -v $(pwd)/backup:/backup alpine tar xzf /backup/opencode-data.tar.gz -C /data
+```
 
 ## Daily Workflow
 
@@ -341,7 +357,11 @@ docker compose up -d
 ### Backup Workspace
 
 ```bash
+# Backup workspace
 tar -czf workspace-backup-$(date +%Y%m%d).tar.gz workspace/
+
+# Backup OpenCode session data
+docker run --rm -v openmoco_opencode_data:/data -v $(pwd):/backup alpine tar czf /backup/opencode-data-$(date +%Y%m%d).tar.gz -C /data .
 ```
 
 ### Clean Up Old Repos
