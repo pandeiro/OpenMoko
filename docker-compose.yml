@@ -4,6 +4,8 @@ services:
     container_name: openmoco
     ports:
       - "127.0.0.1:7777:8080"  # Only expose on localhost for security
+    labels:
+      - "logging=enabled"
     volumes:
       # Workspace directory (where repos live)
       - ./workspace:/workspace:rw
