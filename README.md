@@ -9,6 +9,7 @@ A self-hosted, mobile-first development environment that lets you go from idea â
 ## For Developers
 
 **What is this?**  
+
 OpenMoco is a bundled version of [OpenCode](https://opencode.ai/) meant for running on your own VPS and accessing through its Web UI.
 
 You get agentic coding ([OpenCode Zen](https://opencode.ai/zen)'s free models, [Ollama Cloud](https://ollama.com/search?c=cloud)'s free models, [Google AI Studio](https://aistudio.google.com)'s free models - or any of the others),
@@ -16,9 +17,9 @@ a terminal, file browser. Just install on a system with Docker and reverse proxy
 
 **Why use it?**  
 - Code from your phone, tablet, Chromebook, any browser
-- Persistent toolchains (Python, Node, Go, etc.) via Mise
+- Persistent toolchains (Python, Node, Go, etc.) via [Mise](https://mise.jdx.dev/)
 - Your data, your server â€” no required third-party cloud dependencies
-- OpenCode with the Conductor plugin for structured agentic workflows
+- OpenCode with the [Conductor plugin](https://github.com/Jonkimi/create-conductor-flow) for structured agentic workflows
 - Full terminal access when you need it
 
 **How to use it**  
