@@ -13,6 +13,9 @@ services:
       # OpenCode data persistence (sessions, SQLite DB)
       - opencode_data:/root/.local/share/opencode:rw
 
+      # Persistent toolchain (mise installed languages/tools)
+      - mise_data:/root/.local/share/mise:rw
+
       # OpenCode state persistence
       - opencode_state:/root/.local/state/opencode:rw
 
@@ -60,3 +63,4 @@ volumes:
   opencode_data:
   opencode_state:
   opencode_config:
+  mise_data:

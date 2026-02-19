@@ -47,6 +47,31 @@ https://github.com/user/repo.git  # with token in URL
 | `./workspace` | `/workspace` | Cloned repos (read-write) |
 | `./ssh` | `/root/.ssh` | SSH keys (read-only) |
 | `./config` | `/config` | Config files (read-only) |
+| `mise_data` | `/root/.local/share/mise` | Persistent toolchain (languages/tools) |
+
+## Managing Stacks & Tools
+
+OpenMoco uses **Mise** (a modern `asdf` replacement) for multi-stack toolchain management. This allows the environment to persist languages (Python, Go, Node, etc.) and CLI tools across container restarts and redeployments.
+
+### How it works
+- **Persistence**: Tools are installed into a persistent Docker volume (`mise_data`).
+- **Dynamic**: The agent (or you) can provision any tool on the fly.
+- **Base Layer**: Common build dependencies (`build-essential`, `libssl-dev`) are pre-installed in the image to support compiling tools if needed.
+
+### Usage
+To install or use a specific version of a language:
+```bash
+docker compose exec opencode mise use python@3.12
+docker compose exec opencode mise use go@latest
+docker compose exec opencode mise use node@22
+```
+
+To see what's available:
+```bash
+docker compose exec opencode mise ls-remote
+```
+
+The environment is configured to automatically activate these tools in your shell sessions.
 
 ## Daily Use
 

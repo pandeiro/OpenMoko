@@ -191,8 +191,12 @@ else
     echo "No repos.txt found at $REPOS_FILE, skipping auto-clone."
 fi
 
-# Set up custom PS1 with git status, time, etc
+# Set up custom PS1 and mise initialization
 cat > /root/.bashrc <<'EOF'
+# MoCo shell initialization
+export PATH="/root/.local/share/mise/bin:/root/.local/share/mise/shims:$PATH"
+eval "$(mise activate bash)"
+
 # Custom MoCo PS1
 parse_git_status() {
     if ! git rev-parse --git-dir > /dev/null 2>&1; then
