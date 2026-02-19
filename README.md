@@ -18,6 +18,7 @@ a terminal, file browser. Just install on a system with Docker and reverse proxy
 - Code from your phone, tablet, Chromebook, any browser
 - Persistent toolchains (Python, Node, Go, etc.) via Mise
 - Your data, your server — no required third-party cloud dependencies
+- OpenCode with the Conductor plugin for structured agentic workflows
 - Full terminal access when you need it
 
 **How to use it**  
