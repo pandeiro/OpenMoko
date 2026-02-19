@@ -11,7 +11,18 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     libssl-dev \
     pkg-config \
+    gnupg \
     && rm -rf /var/lib/apt/lists/*
+
+# Install GitHub CLI (gh)
+RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | gpg --dearmor -o /usr/share/keyrings/githubcli-archive-keyring.gpg \
+    && chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
+    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+    && apt-get update && apt-get install -y gh && rm -rf /var/lib/apt/lists/*
+
+# Install GitLab CLI (glab)
+RUN curl -sSL https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | bash \
+    && apt-get update && apt-get install -y glab && rm -rf /var/lib/apt/lists/*
 
 # Install mise (replaces asdf) for language and tool version management
 RUN curl https://mise.run | sh

@@ -73,6 +73,39 @@ docker compose exec opencode mise ls-remote
 
 The environment is configured to automatically activate these tools in your shell sessions.
 
+## Managing Projects
+
+OpenMoco provides built-in support for **GitHub CLI (`gh`)** and **GitLab CLI (`glab`)** to make it easy to clone, manage, and remove projects dynamically.
+
+### Adding Projects (Clone)
+Login once to persist your credentials:
+```bash
+docker compose exec opencode gh auth login
+docker compose exec opencode glab auth login
+```
+
+List and clone repositories directly into the workspace:
+```bash
+# GitHub
+docker compose exec opencode gh repo list
+docker compose exec opencode gh repo clone user/repo
+
+# GitLab
+docker compose exec opencode glab repo list
+docker compose exec opencode glab repo clone user/repo
+```
+
+### Creating New Projects
+You can scaffold new projects from scratch using `mise` and standard build tools:
+```bash
+docker compose exec opencode mkdir /workspace/my-new-app
+docker compose exec opencode cd /workspace/my-new-app && git init
+docker compose exec opencode mise use node@latest
+```
+
+### Removing Projects
+To save disk space, simply remove the directory from the workspace. Since configurations for `gh` and `glab` are persisted in Docker volumes, you won't need to re-authenticate when you come back.
+
 ## Daily Use
 
 ```bash
