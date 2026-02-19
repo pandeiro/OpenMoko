@@ -2,20 +2,20 @@
 
 # OpenMoco (Mobile Coding)
 
-> OpenCode for your VPS — code, debug, and deploy from anywhere using AI agents.
+> Code, debug, and deploy from anywhere using AI agents.
 
-OpenMoco brings the power of AI-assisted coding (like GitHub Copilot Workspace or OpenCode) to your own VPS. It's a self-hosted, mobile-first development environment that lets you go from idea → agent → production entirely from your phone, without needing your laptop.
+A self-hosted, mobile-first development environment that lets you go from idea → agent → production entirely from your phone, without needing your laptop.
 
 ## For Developers
 
 **What is this?**  
-OpenMoco is a bundled version of OpenCode meant for running on your own VPS and accessing through its Web UI.
+OpenMoco is a bundled version of [OpenCode](https://opencode.ai/) meant for running on your own VPS and accessing through its Web UI.
 
-You get agentic coding (OpenCode's free models, Ollama Cloud's free models, Google AI Studio's free models),
+You get agentic coding ([OpenCode Zen](https://opencode.ai/zen)'s free models, [Ollama Cloud](https://ollama.com/search?c=cloud)'s free models, [Google AI Studio](https://aistudio.google.com)'s free models - or any of the others),
 a terminal, file browser. Just install on a system with Docker and reverse proxy it through nginx.
 
 **Why use it?**  
-- Code from your phone, tablet, or any browser
+- Code from your phone, tablet, Chromebook, any browser
 - Persistent toolchains (Python, Node, Go, etc.) via Mise
 - Your data, your server — no required third-party cloud dependencies
 - Full terminal access when you need it
