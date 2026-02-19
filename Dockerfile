@@ -6,6 +6,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     openssh-client \
     bash \
     jq \
+    tree \
     curl \
     ca-certificates \
     build-essential \
