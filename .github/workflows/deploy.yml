@@ -1,9 +1,11 @@
-name: Build
+name: Deploy
 
 on:
   push:
     paths-ignore:
       - "README.md"
+      - "doc/**"
+      - ".gemini/**"
     branches:
       - main
   workflow_dispatch:
@@ -49,32 +51,21 @@ jobs:
           script: |
             cd ${{ secrets.DEPLOY_PATH }}
             
-            # Backup sensitive files before any git operations
-            echo "Backing up existing files before git operations..."
+            # Backup .env
             cp .env .env.bak 2>/dev/null || true
-            cp ssh/id_rsa ssh/id_rsa.bak 2>/dev/null || true
-            cp ssh/id_ed25519 ssh/id_ed25519.bak 2>/dev/null || true
-            cp config/repos.txt config/repos.txt.bak 2>/dev/null || true
+            cp -r ssh ssh.bak 2>/dev/null || true
             
-            # Fetch latest changes from origin
-            echo "Fetching latest git commit..."
+            # Update source code
             git fetch origin main
-            git checkout origin/main -- docker-compose.yml || true
-            echo "Latest docker-compose.yml:"
-            echo
-            cat docker-compose.yml
-            echo
+            git reset --hard origin/main
             
-            # Restore sensitive files (they should never be overwritten by git)
-            echo "Restoring existing files..."
-            cp -f .env.bak .env 2>/dev/null || true
-            cp -f ssh/id_rsa.bak ssh/id_rsa 2>/dev/null || true
-            cp -f ssh/id_ed25519.bak ssh/id_ed25519 2>/dev/null || true
-            cp -f config/repos.txt.bak config/repos.txt 2>/dev/null || true
+            # Restore backups
+            cp .env.bak .env 2>/dev/null || true
+            rm -rf ssh && cp -r ssh.bak ssh 2>/dev/null || true
+            rm -rf ssh.bak .env.bak
             
-            # Clean up backups
-            echo "Cleaning up backups..."
-            rm -f .env.bak ssh/*.bak config/repos.txt.bak 2>/dev/null
-            
-            docker compose pull
-            docker compose up -d
+            # Pull new opencode image, build local services, and restart
+            docker compose pull opencode
+            docker compose build
+            docker compose up -d --remove-orphans
+

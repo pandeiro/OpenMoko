@@ -81,12 +81,21 @@ See Appendix D for full data model.
 
 The mobile entry point for starting an agent task.
 
+### Visual Design
+- **Aesthetic**: Clean, modern look, mirroring OpenCode's interface design.
+- **Theming**: Native CSS variables supporting Light and Dark modes. Defaults to matching the system (`prefers-color-scheme`).
+
 ### Happy path
 
 1. Developer opens `openmoco.yourvps.com/init`
-2. If no repos enabled → welcome/onboarding state. Otherwise: **project picker** — horizontally scrollable row of enabled repo chips, most recently active first. Tap to switch. Gear icon → repo management.
-3. **Voice button** — tap to begin. Web Speech API starts immediately; live transcription appears on screen as the developer speaks.
-4. Recording stops on silence (`speechend` / `onend`, ~2.5s threshold — internal constant, not user-configurable in v1). Manual stop button always visible.
+2. If no repos enabled → welcome/onboarding state. Otherwise: **project picker** — horizontally scrollable row of enabled repo chips, most recently active first. Tap to switch. Gear icon → repo management. (Note: Implemented as a direct project selection list in v0.3).
+3. **Voice button** — tap to begin. Web Speech API starts immediately; flowing live transcription appears on screen as the developer speaks.
+4. **Pause Detection & Grace Period:**
+   - When the user pauses speaking, a visual **2.5s timer** begins running on screen.
+   - If the timer hits 0 (2.5s elapsed), the system determines the user has stopped, and a **"Continue Talking" button** appears temporarily for 1 second.
+   - If tapped within that 1 second, the user can continue talking and append more speech to the current transcript (the same recording session stays active).
+   - If ignored, the recording definitively stops, defaulting to "send" the audio to the processing pipeline (total 3.5s elapsed since speech stopped).
+   - A manual stop/send button is always visible to skip the wait.
 5. If `WHISPER_API_KEY` configured: audio blob POSTs to `/api/transcribe`, Whisper result replaces Web Speech transcript. "Improving transcript..." shown briefly.
 6. Transcript POSTs to `/api/reform` with project context. "Reformulating..." shown.
 7. Cleaned prompt appears in editable text field. Re-record icon (↺) lets developer discard and start over.
