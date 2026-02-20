@@ -7,7 +7,7 @@ const GITHUB_API = 'https://api.github.com';
 function headers() {
     const h = {
         Accept: 'application/vnd.github+json',
-        'User-Agent': 'openmoco-events',
+        'User-Agent': 'openmoko-events',
         'X-GitHub-Api-Version': '2022-11-28',
     };
     if (process.env.GITHUB_PAT) {

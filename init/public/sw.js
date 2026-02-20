@@ -1,4 +1,4 @@
-const CACHE_NAME = 'openmoco-init-v1';
+const CACHE_NAME = 'openmoko-init-v1';
 const ASSETS_TO_CACHE = [
     '/init/',
     '/init/index.html',
@@ -52,7 +52,7 @@ self.addEventListener('fetch', (event) => {
 });
 
 self.addEventListener('push', (event) => {
-    const data = event.data?.json() || { title: 'OpenMoco', body: 'New update available' };
+    const data = event.data?.json() || { title: 'OpenMoko', body: 'New update available' };
 
     const options = {
         body: data.body,

@@ -1,7 +1,7 @@
 {
-    "name": "OpenMoco Init",
+    "name": "OpenMoko Init",
     "short_name": "Init",
-    "description": "Voice entry point for OpenMoco agent tasks.",
+    "description": "Voice entry point for OpenMoko agent tasks.",
     "start_url": "/init/",
     "display": "standalone",
     "background_color": "#0a0a0f",

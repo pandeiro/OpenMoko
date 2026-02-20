@@ -1,10 +1,10 @@
-![OpenMoco Screenshot](screenshot.png)
+![OpenMoko Screenshot](screenshot.png)
 
-# OpenMoco (Mobile Coding) v0.3
+# OpenMoko (Mobile Coding) v0.3
 
 > Code, debug, and deploy from anywhere using AI agents.
 
-OpenMoco is a self-hosted, mobile-first development environment that lets you go from idea → agent → production entirely from your phone.
+OpenMoko is a self-hosted, mobile-first development environment that lets you go from idea → agent → production entirely from your phone.
 
 It bundles [OpenCode](https://opencode.ai/) with a custom multi-service architecture for repository management, voice entry, and CI/CD awareness.
 
@@ -16,9 +16,9 @@ It bundles [OpenCode](https://opencode.ai/) with a custom multi-service architec
 
 ## Architecture
 - **`opencode`**: The core development environment.
-- **`openmoco-init`**: Static PWA frontend (Vite-based).
-- **`openmoco-events`**: Node.js backend for API, GitHub integration, and push notifications.
-- **`openmoco-nginx`**: Reverse proxy routing all traffic through port 7777.
+- **`openmoko-init`**: Static PWA frontend (Vite-based).
+- **`openmoko-events`**: Node.js backend for API, GitHub integration, and push notifications.
+- **`openmoko-nginx`**: Reverse proxy routing all traffic through port 7777.
 
 ## Quick Setup
 
@@ -59,7 +59,7 @@ Detailed in `.env.example`. Key groups:
 ### GitHub Webhook Setup
 
 Total CI/CD awareness requires a webhook on your repositories:
-1. **Payload URL**: `https://your-openmoco-domain.com/webhooks/github`
+1. **Payload URL**: `https://your-openmoko-domain.com/webhooks/github`
 2. **Content type**: `application/json`
 3. **Secret**: Matches your `GITHUB_WEBHOOK_SECRET`
 4. **Events**: `push`, `workflow_run`, `pull_request`
@@ -67,7 +67,7 @@ Total CI/CD awareness requires a webhook on your repositories:
 ## Usage
 
 ### Managing Repositories
-Open the Init PWA and tap the gear icon ⚙️. Search for your GitHub repos and tap "Enable". OpenMoco will handle cloning in the background.
+Open the Init PWA and tap the gear icon ⚙️. Search for your GitHub repos and tap "Enable". OpenMoko will handle cloning in the background.
 
 ### Starting a Task
 1. Select a repo from the picker.

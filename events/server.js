@@ -56,7 +56,7 @@ app.use('/events', eventsRouter);
 async function start() {
   await ensureDataDir();
   app.listen(PORT, '0.0.0.0', () => {
-    console.log(`openmoco-events listening on port ${PORT}`);
+    console.log(`openmoko-events listening on port ${PORT}`);
   });
 }
 

@@ -51,7 +51,7 @@ export async function writeJSON(relativePath, data) {
     const path = join(DATA_DIR, relativePath);
     await mkdir(dirname(path), { recursive: true });
 
-    const tmp = join(tmpdir(), `openmoco-${randomUUID()}.json`);
+    const tmp = join(tmpdir(), `openmoko-${randomUUID()}.json`);
     await writeFile(tmp, JSON.stringify(data, null, 2), 'utf-8');
 
     // Rename is atomic on the same filesystem; tmp may be different,

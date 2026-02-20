@@ -1,7 +1,7 @@
-# OpenMoco PRD — v0.3 Draft
+# OpenMoko PRD — v0.3 Draft
 
-**Scope:** Two-week solo sprint  
-**Features:** Init (voice entry) · CI/CD awareness + push notifications · Repo management  
+**Scope:** Two-week solo sprint
+**Features:** Init (voice entry) · CI/CD awareness + push notifications · Repo management
 **Out of scope:** Autonomous agent mode · PR creation · multi-provider CI · OpenCode fork
 
 ---
@@ -14,7 +14,7 @@
 
 **No repos.txt.** Replaced by a repo management UI backed by the GitHub API. The PAT required for CI/CD is the same one used to fetch and manage repos.
 
-**Singleton active session.** OpenMoco tracks one active session at a time in `active_session.json` on the events_data volume. Starting a new task overwrites it. Sessions are abandoned on the OpenCode side (not explicitly deleted) — at personal use scale this is fine. The active session is cleared when its branch is detected as merged via GitHub webhook. This sidesteps all session lifecycle and workspace cleanup complexity.
+**Singleton active session.** OpenMoko tracks one active session at a time in `active_session.json` on the events_data volume. Starting a new task overwrites it. Sessions are abandoned on the OpenCode side (not explicitly deleted) — at personal use scale this is fine. The active session is cleared when its branch is detected as merged via GitHub webhook. This sidesteps all session lifecycle and workspace cleanup complexity.
 
 **CI/CD notifications are Web Push.** No surface to inject toasts into OpenCode's UI without forking. Service worker registered by Init receives push events and delivers OS-level notifications visible even when backgrounded.
 
@@ -87,7 +87,7 @@ The mobile entry point for starting an agent task.
 
 ### Happy path
 
-1. Developer opens `openmoco.yourvps.com/init`
+1. Developer opens `openmoko.yourvps.com/init`
 2. If no repos enabled → welcome/onboarding state. Otherwise: **project picker** — horizontally scrollable row of enabled repo chips, most recently active first. Tap to switch. Gear icon → repo management. (Note: Implemented as a direct project selection list in v0.3).
 3. **Voice button** — tap to begin. Web Speech API starts immediately; flowing live transcription appears on screen as the developer speaks.
 4. **Pause Detection & Grace Period:**
@@ -109,7 +109,7 @@ The mobile entry point for starting an agent task.
     - Prompt includes branch instruction if applicable: `git checkout -b [slug]` as first action
     - Stores session ID + repo + branch in `active_session.json`
     - Returns `{ sessionId, redirectUrl }` to client
-    - Browser navigates to `openmoco.yourvps.com/#/session/[sessionId]`
+    - Browser navigates to `openmoko.yourvps.com/#/session/[sessionId]`
     - OpenCode receives the session already live
 
 ### SDK usage
@@ -162,7 +162,7 @@ Payload sent to agent = failing job name + failing step name + last 50 lines of 
 
 ---
 
-## openmoco-events Service
+## openmoko-events Service
 
 Node.js, ~350 lines:
 
@@ -188,7 +188,7 @@ services:
   opencode:
     # unchanged from existing setup
 
-  openmoco-nginx:
+  openmoko-nginx:
     image: nginx:alpine
     ports:
       - "7777:80"
@@ -196,16 +196,16 @@ services:
       - ./config/nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
       - opencode
-      - openmoco-init
-      - openmoco-events
+      - openmoko-init
+      - openmoko-events
 
-  openmoco-init:
+  openmoko-init:
     image: nginx:alpine
     volumes:
       - ./init/dist:/usr/share/nginx/html:ro
     expose: ['3000']
 
-  openmoco-events:
+  openmoko-events:
     build: ./events
     env_file: .env
     expose: ['3001']
@@ -369,12 +369,12 @@ http {
     server opencode:8080;
   }
 
-  upstream openmoco_init {
-    server openmoco-init:3000;
+  upstream openmoko_init {
+    server openmoko-init:3000;
   }
 
-  upstream openmoco_events {
-    server openmoco-events:3001;
+  upstream openmoko_events {
+    server openmoko-events:3001;
   }
 
   server {
@@ -382,13 +382,13 @@ http {
 
     # Init PWA
     location /init/ {
-      proxy_pass http://openmoco_init/;
+      proxy_pass http://openmoko_init/;
       proxy_set_header Host $host;
     }
 
     # Backend API (transcribe, reform, session, repos)
     location /api/ {
-      proxy_pass http://openmoco_events/api/;
+      proxy_pass http://openmoko_events/api/;
       proxy_set_header Host $host;
       # Increase timeout for audio upload + Whisper round trip
       proxy_read_timeout 30s;
@@ -397,7 +397,7 @@ http {
 
     # SSE — disable buffering
     location /events {
-      proxy_pass http://openmoco_events/events;
+      proxy_pass http://openmoko_events/events;
       proxy_set_header Host $host;
       proxy_set_header Connection '';
       proxy_http_version 1.1;
@@ -408,7 +408,7 @@ http {
 
     # GitHub inbound webhooks
     location /webhooks/ {
-      proxy_pass http://openmoco_events/webhooks/;
+      proxy_pass http://openmoko_events/webhooks/;
       proxy_set_header Host $host;
       proxy_set_header X-Real-IP $remote_addr;
     }

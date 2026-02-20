@@ -162,7 +162,7 @@ if [ -d "/root/.ssh" ]; then
     export GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/tmp/.ssh/known_hosts -o StrictHostKeyChecking=accept-new"
 fi
 
-# Note: Repo cloning is now handled by the openmoco-events service
+# Note: Repo cloning is now handled by the openmoko-events service
 # via the Init repo management UI. No repos.txt needed.
 
 # Set up custom PS1 and mise initialization

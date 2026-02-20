@@ -1,7 +1,7 @@
 services:
   opencode:
-    image: pandeiro/openmoco:latest
-    container_name: openmoco
+    image: pandeiro/openmoko:latest
+    container_name: openmoko
     labels:
       - "logging=enabled"
     expose:
@@ -46,7 +46,7 @@ services:
 
     restart: unless-stopped
 
-  openmoco-nginx:
+  openmoko-nginx:
     image: nginx:alpine
     ports:
       - "7777:80"
@@ -54,11 +54,11 @@ services:
       - ./config/nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
       - opencode
-      - openmoco-init
-      - openmoco-events
+      - openmoko-init
+      - openmoko-events
     restart: unless-stopped
 
-  openmoco-init:
+  openmoko-init:
     image: nginx:alpine
     volumes:
       - ./init/dist:/usr/share/nginx/html:ro
@@ -67,7 +67,7 @@ services:
       - "3000"
     restart: unless-stopped
 
-  openmoco-events:
+  openmoko-events:
     build: ./events
     env_file: .env
     expose:
