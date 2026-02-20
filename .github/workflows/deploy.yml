@@ -35,7 +35,7 @@ jobs:
           platforms: linux/amd64
           no-cache: true
           push: true
-          tags: pandeiro/openmoco:latest,pandeiro/openmoco:${{ github.sha }}
+          tags: pandeiro/openmoko:latest,pandeiro/openmoko:${{ github.sha }}
 
   deploy:
     needs: build
