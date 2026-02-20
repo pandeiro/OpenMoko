@@ -1,3 +1,7 @@
 .env
 
 .opencode
+
+events/node_modules/
+init/node_modules/
+init/dist/

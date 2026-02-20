@@ -2,14 +2,14 @@ services:
   opencode:
     image: pandeiro/openmoco:latest
     container_name: openmoco
-    ports:
-      - "127.0.0.1:7777:8080"  # Only expose on localhost for security
     labels:
       - "logging=enabled"
+    expose:
+      - "8080"
     volumes:
       # Workspace directory (where repos live)
       - ./workspace:/workspace:rw
-      
+
       # OpenCode data persistence (sessions, SQLite DB)
       - opencode_data:/root/.local/share/opencode:rw
 
@@ -24,18 +24,14 @@ services:
 
       # SSH keys for git authentication (read-only for security)
       - ./ssh:/root/.ssh:ro
-      
-      # Config directory for repos.txt
-      - ./config:/config:ro
-      
       # Optional: Git config (if you want to pre-configure)
       # - ./gitconfig:/root/.gitconfig:ro
-    
+
     environment:
       # Git configuration
       - GIT_USER_NAME=${GIT_USER_NAME}
       - GIT_USER_EMAIL=${GIT_USER_EMAIL}
-      
+
       # OpenCode password (REQUIRED)
       - OPENCODE_SERVER_PASSWORD=${OPENCODE_SERVER_PASSWORD}
 
@@ -47,20 +43,46 @@ services:
 
       # OpenCode configuration (adjust as needed)
       - NODE_ENV=production
-    
-    restart: unless-stopped
-    
-    # Uncomment if you need to access other services
-    # networks:
-    #   - app-network
 
-# Uncomment if using custom networks
-# networks:
-#   app-network:
-#     driver: bridge
+    restart: unless-stopped
+
+  openmoco-nginx:
+    image: nginx:alpine
+    ports:
+      - "7777:80"
+    volumes:
+      - ./config/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - opencode
+      - openmoco-init
+      - openmoco-events
+    restart: unless-stopped
+
+  openmoco-init:
+    image: nginx:alpine
+    volumes:
+      - ./init/dist:/usr/share/nginx/html:ro
+      - ./init/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    expose:
+      - "3000"
+    restart: unless-stopped
+
+  openmoco-events:
+    build: ./events
+    env_file: .env
+    expose:
+      - "3001"
+    volumes:
+      - ./workspace:/workspace:rw
+      - ./ssh:/root/.ssh:ro
+      - events_data:/data
+    depends_on:
+      - opencode
+    restart: unless-stopped
 
 volumes:
   opencode_data:
   opencode_state:
   opencode_config:
   mise_data:
+  events_data:

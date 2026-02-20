@@ -162,34 +162,8 @@ if [ -d "/root/.ssh" ]; then
     export GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/tmp/.ssh/known_hosts -o StrictHostKeyChecking=accept-new"
 fi
 
-# Clone repositories from repos.txt if it exists
-REPOS_FILE="/config/repos.txt"
-if [ -f "$REPOS_FILE" ]; then
-    echo "Found repos.txt, checking repositories..."
-    
-    while IFS= read -r repo || [ -n "$repo" ]; do
-        # Skip empty lines and comments
-        [[ -z "$repo" || "$repo" =~ ^[[:space:]]*# ]] && continue
-        
-        # Extract repo name from URL (last part without .git)
-        repo_name=$(basename "$repo" .git)
-        repo_path="/workspace/$repo_name"
-        
-        if [ -d "$repo_path" ]; then
-            echo "Repository $repo_name already exists, pulling latest..."
-            cd "$repo_path"
-            git pull || echo "Warning: Failed to pull $repo_name"
-            cd /workspace
-        else
-            echo "Cloning $repo_name..."
-            git clone "$repo" "$repo_path" || echo "Warning: Failed to clone $repo"
-        fi
-    done < "$REPOS_FILE"
-    
-    echo "Repository synchronization complete."
-else
-    echo "No repos.txt found at $REPOS_FILE, skipping auto-clone."
-fi
+# Note: Repo cloning is now handled by the openmoco-events service
+# via the Init repo management UI. No repos.txt needed.
 
 # Set up custom PS1 and mise initialization
 cat > /root/.bashrc <<'EOF'
