@@ -51,7 +51,19 @@ jobs:
           script: |
             cd ${{ secrets.DEPLOY_PATH }}
             
-            # Backup .env
+            # First deploy: create .env from secret if it doesn't exist
+            if [ ! -f .env ]; then
+              echo "${{ secrets.PROD_ENV }}" > .env
+            fi
+            
+            # First deploy: create SSH key from secret if it doesn't exist
+            mkdir -p ssh
+            if [ ! -f ssh/id_rsa ]; then
+              echo "${{ secrets.GITHUB_SSH_KEY }}" > ssh/id_rsa
+              chmod 600 ssh/id_rsa
+            fi
+            
+            # Backup existing files before update
             cp .env .env.bak 2>/dev/null || true
             cp -r ssh ssh.bak 2>/dev/null || true
             
@@ -59,7 +71,7 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
             
-            # Restore backups
+            # Restore backups (preserves user credentials across deploys)
             cp .env.bak .env 2>/dev/null || true
             rm -rf ssh && cp -r ssh.bak ssh 2>/dev/null || true
             rm -rf ssh.bak .env.bak

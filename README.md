@@ -67,7 +67,7 @@ docker compose up --build -d
 
 Detailed in `.env.example`. Key groups:
 - **Git Identity**: `GIT_USER_NAME`, `GIT_USER_EMAIL`
-- **Security**: `OPENCODE_SERVER_PASSWORD`
+- **Security**: `OPENMOKO_USER`, `OPENMOKO_PASSWORD`
 - **GitHub**: `GITHUB_PAT` (for repo listing/cloning), `GITHUB_WEBHOOK_SECRET`
 - **Web Push**: Generate VAPID keys using `npx web-push generate-vapid-keys`
   - `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_CONTACT`
