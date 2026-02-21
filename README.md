@@ -13,6 +13,7 @@ It bundles [OpenCode](https://opencode.ai/) with a custom multi-service architec
 - **Repo Management UI**: No more `repos.txt`. Manage your GitHub projects directly from the mobile app.
 - **CI/CD Awareness**: Real-time push notifications for build passes/failures.
 - **Failure Resume**: Failed a build? See the logs on your phone and send a fix to the agent with one tap.
+- **Universal Toolchain Support**: Powered by [`mise`](https://mise.jdx.dev/), your agent can instantly install any language or tool (Node, Python, Rust, Go, etc.) on-demand—no image rebuilds, no host OS dependencies.
 
 ## Architecture
 - **`opencode`**: The core development environment.
@@ -100,7 +101,7 @@ If a CI check fails, you'll receive an OS-level push notification. Tap it to see
 ## Persistence
 - `/workspace`: Cloned projects.
 - `events_data` (volume): Repo state, sessions, and failure records.
-- `mise_data` (volume): Installed languages and toolchains.
+- `mise_data` (volume): Persisted language/toolchain installations across container restarts.
 
 ## License
 Provided as-is for personal and commercial use.
